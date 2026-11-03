@@ -1,0 +1,11 @@
+reimport:
+  fields:
+    config_entry_id:
+      required: true
+      selector:
+        config_entry:
+          integration: aigues_vic
+    start_date:
+      required: false
+      selector:
+        date:

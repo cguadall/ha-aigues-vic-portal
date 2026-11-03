@@ -1,0 +1,234 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Aigües Vic virtual office",
+        "description": "Sign in with the credentials of the Aigües Vic virtual office. They are only used to read your contracts and consumption.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        },
+        "data_description": {
+          "email": "Email used to sign in to the virtual office.",
+          "password": "Password of the virtual office."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Update the password",
+        "description": "The virtual office rejected the password for {email}. Enter the current password.",
+        "data": {
+          "password": "Password"
+        },
+        "data_description": {
+          "password": "Password of the virtual office."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Could not connect to the virtual office. Try again later.",
+      "no_contracts": "The account has no active contracts.",
+      "unknown": "Unexpected response from the virtual office."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "reauth_successful": "The password was updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Statistics",
+        "data": {
+          "import_history": "Import the full consumption history",
+          "price_per_m3": "Water price"
+        },
+        "data_description": {
+          "import_history": "Imports all consumption available on the portal into the water statistics, once per contract. It may take a few minutes.",
+          "price_per_m3": "Price per m³ used to build the cost statistic for the energy dashboard. Use the variable part of the bill; 0 disables it."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "possible_leak": {
+        "name": "Possible leak",
+        "state_attributes": {
+          "minimum": {
+            "name": "Minimum hourly consumption"
+          },
+          "until": {
+            "name": "Until"
+          }
+        }
+      }
+    },
+    "button": {
+      "synchronize": {
+        "name": "Synchronize now"
+      }
+    },
+    "sensor": {
+      "meter_reading": {
+        "name": "Meter index"
+      },
+      "reading_date": {
+        "name": "Reading date"
+      },
+      "last_day_consumption": {
+        "name": "Last day consumption",
+        "state_attributes": {
+          "day": {
+            "name": "Day"
+          }
+        }
+      },
+      "night_minimum": {
+        "name": "Night minimum consumption",
+        "state_attributes": {
+          "day": {
+            "name": "Day"
+          }
+        }
+      },
+      "month_consumption": {
+        "name": "Consumption this month",
+        "state_attributes": {
+          "month": {
+            "name": "Month"
+          }
+        }
+      },
+      "previous_month_consumption": {
+        "name": "Consumption previous month",
+        "state_attributes": {
+          "month": {
+            "name": "Month"
+          }
+        }
+      },
+      "daily_average": {
+        "name": "Daily average (30 days)",
+        "state_attributes": {
+          "days": {
+            "name": "Days"
+          }
+        }
+      },
+      "last_billed_consumption": {
+        "name": "Last billed consumption",
+        "state_attributes": {
+          "period_end": {
+            "name": "Period end"
+          },
+          "days": {
+            "name": "Days"
+          }
+        }
+      },
+      "data_until": {
+        "name": "Data available until"
+      },
+      "last_import": {
+        "name": "Last statistics import"
+      },
+      "import_status": {
+        "name": "Statistics import",
+        "state": {
+          "idle": "Up to date",
+          "importing": "Importing",
+          "importing_history": "Importing history",
+          "error": "Error"
+        },
+        "state_attributes": {
+          "phase": {
+            "name": "Phase",
+            "state": {
+              "probe": "Checking hourly data",
+              "hourly": "Hourly consumption",
+              "daily": "Daily consumption",
+              "cost": "Cost"
+            }
+          },
+          "period": {
+            "name": "Period"
+          },
+          "progress": {
+            "name": "Progress"
+          },
+          "started": {
+            "name": "Started"
+          },
+          "last_success": {
+            "name": "Last success"
+          },
+          "last_error": {
+            "name": "Last error"
+          },
+          "failures": {
+            "name": "Consecutive failures"
+          },
+          "next_retry": {
+            "name": "Next retry"
+          },
+          "history_complete": {
+            "name": "History complete"
+          },
+          "hourly_since": {
+            "name": "Hourly data since"
+          },
+          "history_since": {
+            "name": "History since"
+          }
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": {
+      "message": "The virtual office rejected the credentials."
+    },
+    "update_failed": {
+      "message": "Could not update data from the virtual office ({error})."
+    },
+    "sync_failed": {
+      "message": "Could not synchronize with the virtual office. Check the logs."
+    },
+    "reimport_failed": {
+      "message": "Could not import the statistics again ({error})."
+    },
+    "entry_not_loaded": {
+      "message": "The Aigües Vic account is not loaded."
+    },
+    "invalid_start_date": {
+      "message": "The start date must be between {first} and {last}."
+    }
+  },
+  "issues": {
+    "update_failed": {
+      "title": "Aigües Vic cannot reach the virtual office",
+      "description": "The last {failures} updates for {account} failed ({error}). The integration keeps retrying with increasing delays. Check that the virtual office works and see the logs of `custom_components.aigues_vic`. This notice disappears after the next successful update."
+    },
+    "statistics_failed": {
+      "title": "Aigües Vic cannot import water statistics",
+      "description": "The last {failures} statistics imports for {account} failed ({error}). The energy dashboard may be missing recent consumption. The integration keeps retrying; see the logs of `custom_components.aigues_vic`. This notice disappears after the next successful import."
+    }
+  },
+  "services": {
+    "reimport": {
+      "name": "Reimport statistics",
+      "description": "Imports the water statistics of every contract of an account again, from a day, or everything, until yesterday.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Account",
+          "description": "The Aigües Vic account to reimport."
+        },
+        "start_date": {
+          "name": "Start date",
+          "description": "First day to import again. Leave empty to import everything the virtual office has, going back until there is no more data."
+        }
+      }
+    }
+  }
+}

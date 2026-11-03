@@ -1,0 +1,56 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "possible_leak": {
+        "default": "mdi:water-check",
+        "state": {
+          "on": "mdi:pipe-leak"
+        }
+      }
+    },
+    "button": {
+      "synchronize": {
+        "default": "mdi:sync"
+      }
+    },
+    "sensor": {
+      "meter_reading": {
+        "default": "mdi:counter"
+      },
+      "reading_date": {
+        "default": "mdi:calendar-check"
+      },
+      "last_billed_consumption": {
+        "default": "mdi:receipt-text"
+      },
+      "night_minimum": {
+        "default": "mdi:weather-night"
+      },
+      "month_consumption": {
+        "default": "mdi:calendar-month"
+      },
+      "previous_month_consumption": {
+        "default": "mdi:calendar-arrow-left"
+      },
+      "daily_average": {
+        "default": "mdi:chart-line"
+      },
+      "data_until": {
+        "default": "mdi:clock-check-outline"
+      },
+      "import_status": {
+        "default": "mdi:database-check",
+        "state": {
+          "importing": "mdi:database-sync",
+          "importing_history": "mdi:database-clock",
+          "error": "mdi:database-alert"
+        }
+      }
+    }
+  },
+  "services": {
+    "reimport": {
+      "service": "mdi:database-refresh"
+    }
+  }
+}

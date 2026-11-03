@@ -1,0 +1,17 @@
+{
+  "domain": "aigues_vic",
+  "name": "Aigües Vic",
+  "codeowners": [
+    "@cguadall"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "recorder"
+  ],
+  "documentation": "https://github.com/cguadall/ha-aigues-vic-portal",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/cguadall/ha-aigues-vic-portal/issues",
+  "requirements": [],
+  "version": "0.3.0"
+}

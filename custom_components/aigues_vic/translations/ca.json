@@ -1,0 +1,234 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Oficina virtual d'Aigües Vic",
+        "description": "Inicia la sessió amb les credencials de l'oficina virtual d'Aigües Vic. Només s'utilitzen per llegir els teus contractes i consums.",
+        "data": {
+          "email": "Correu electrònic",
+          "password": "Contrasenya"
+        },
+        "data_description": {
+          "email": "Correu amb què inicies la sessió a l'oficina virtual.",
+          "password": "Contrasenya de l'oficina virtual."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Actualitza la contrasenya",
+        "description": "L'oficina virtual ha rebutjat la contrasenya de {email}. Introdueix la contrasenya actual.",
+        "data": {
+          "password": "Contrasenya"
+        },
+        "data_description": {
+          "password": "Contrasenya de l'oficina virtual."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "El correu o la contrasenya no són correctes.",
+      "cannot_connect": "No s'ha pogut connectar amb l'oficina virtual. Torna-ho a provar més tard.",
+      "no_contracts": "El compte no té cap contracte actiu.",
+      "unknown": "Resposta inesperada de l'oficina virtual."
+    },
+    "abort": {
+      "already_configured": "Aquest compte ja està configurat.",
+      "reauth_successful": "S'ha actualitzat la contrasenya."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Estadístiques",
+        "data": {
+          "import_history": "Importa tot l'històric de consums",
+          "price_per_m3": "Preu de l'aigua"
+        },
+        "data_description": {
+          "import_history": "Importa a les estadístiques d'aigua tots els consums disponibles al portal, una sola vegada per contracte. Pot trigar uns minuts.",
+          "price_per_m3": "Preu per m³ per crear l'estadística de cost del panell d'energia. Fes servir la part variable de la factura; 0 la desactiva."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "possible_leak": {
+        "name": "Possible fuita",
+        "state_attributes": {
+          "minimum": {
+            "name": "Consum horari mínim"
+          },
+          "until": {
+            "name": "Fins a"
+          }
+        }
+      }
+    },
+    "button": {
+      "synchronize": {
+        "name": "Sincronitza ara"
+      }
+    },
+    "sensor": {
+      "meter_reading": {
+        "name": "Índex del comptador"
+      },
+      "reading_date": {
+        "name": "Data de lectura"
+      },
+      "last_day_consumption": {
+        "name": "Consum del darrer dia",
+        "state_attributes": {
+          "day": {
+            "name": "Dia"
+          }
+        }
+      },
+      "night_minimum": {
+        "name": "Consum mínim nocturn",
+        "state_attributes": {
+          "day": {
+            "name": "Dia"
+          }
+        }
+      },
+      "month_consumption": {
+        "name": "Consum d'aquest mes",
+        "state_attributes": {
+          "month": {
+            "name": "Mes"
+          }
+        }
+      },
+      "previous_month_consumption": {
+        "name": "Consum del mes anterior",
+        "state_attributes": {
+          "month": {
+            "name": "Mes"
+          }
+        }
+      },
+      "daily_average": {
+        "name": "Mitjana diària (30 dies)",
+        "state_attributes": {
+          "days": {
+            "name": "Dies"
+          }
+        }
+      },
+      "last_billed_consumption": {
+        "name": "Darrer consum facturat",
+        "state_attributes": {
+          "period_end": {
+            "name": "Fi del període"
+          },
+          "days": {
+            "name": "Dies"
+          }
+        }
+      },
+      "data_until": {
+        "name": "Dades disponibles fins a"
+      },
+      "last_import": {
+        "name": "Darrera importació d'estadístiques"
+      },
+      "import_status": {
+        "name": "Importació d'estadístiques",
+        "state": {
+          "idle": "Al dia",
+          "importing": "Important",
+          "importing_history": "Important l'històric",
+          "error": "Error"
+        },
+        "state_attributes": {
+          "phase": {
+            "name": "Fase",
+            "state": {
+              "probe": "Comprovant dades horàries",
+              "hourly": "Consum horari",
+              "daily": "Consum diari",
+              "cost": "Cost"
+            }
+          },
+          "period": {
+            "name": "Període"
+          },
+          "progress": {
+            "name": "Progrés"
+          },
+          "started": {
+            "name": "Inici"
+          },
+          "last_success": {
+            "name": "Darrera importació correcta"
+          },
+          "last_error": {
+            "name": "Darrer error"
+          },
+          "failures": {
+            "name": "Errors consecutius"
+          },
+          "next_retry": {
+            "name": "Proper reintent"
+          },
+          "history_complete": {
+            "name": "Històric complet"
+          },
+          "hourly_since": {
+            "name": "Dades horàries des de"
+          },
+          "history_since": {
+            "name": "Històric des de"
+          }
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": {
+      "message": "L'oficina virtual ha rebutjat les credencials."
+    },
+    "update_failed": {
+      "message": "No s'han pogut actualitzar les dades de l'oficina virtual ({error})."
+    },
+    "sync_failed": {
+      "message": "No s'ha pogut sincronitzar amb l'oficina virtual. Consulta els registres."
+    },
+    "reimport_failed": {
+      "message": "No s'han pogut tornar a importar les estadístiques ({error})."
+    },
+    "entry_not_loaded": {
+      "message": "El compte d'Aigües Vic no està carregat."
+    },
+    "invalid_start_date": {
+      "message": "La data d'inici ha d'estar entre {first} i {last}."
+    }
+  },
+  "issues": {
+    "update_failed": {
+      "title": "Aigües Vic no pot accedir a l'oficina virtual",
+      "description": "Les {failures} darreres actualitzacions de {account} han fallat ({error}). La integració ho continua provant amb esperes cada vegada més llargues. Comprova que l'oficina virtual funciona i consulta els registres de `custom_components.aigues_vic`. Aquest avís desapareix després de la propera actualització correcta."
+    },
+    "statistics_failed": {
+      "title": "Aigües Vic no pot importar les estadístiques d'aigua",
+      "description": "Les {failures} darreres importacions d'estadístiques de {account} han fallat ({error}). Al panell d'energia hi poden faltar consums recents. La integració ho continua provant; consulta els registres de `custom_components.aigues_vic`. Aquest avís desapareix després de la propera importació correcta."
+    }
+  },
+  "services": {
+    "reimport": {
+      "name": "Reimporta les estadístiques",
+      "description": "Torna a importar les estadístiques d'aigua de tots els contractes d'un compte, des d'un dia, o tot l'històric, fins ahir.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Compte",
+          "description": "El compte d'Aigües Vic que es reimporta."
+        },
+        "start_date": {
+          "name": "Data d'inici",
+          "description": "Primer dia que es torna a importar. Deixa-ho buit per importar tot el que té l'oficina virtual, retrocedint fins que no hi hagi més dades."
+        }
+      }
+    }
+  }
+}
