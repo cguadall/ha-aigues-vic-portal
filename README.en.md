@@ -7,13 +7,12 @@ the Aigües Vic (AVSA) [customer portal](https://oficina.aiguesvic.com).
 
 ## Status: version 0.3.0, not yet validated against the real portal
 
-The integration is implemented and tested against a simulated portal built
-from anonymized captures, but it has not yet been validated against the real
-portal in a Home Assistant installation. Failed sign-in, successful sign-in and
-logout flows have been checked against HAR captures. Other portal behaviour
-(session expiry, daylight saving changes, Spanish headers) was inferred and may
-need adjustments. See [docs/user-steps.en.md](docs/user-steps.en.md) for the
-pending tests.
+The integration is implemented and tested against a simulated portal built from
+captures of the new Aigües de Vic REST API, but it has not yet been validated
+against the real portal on a live Home Assistant installation. JWT authentication
+flows (sign-in and token refresh), contract listings, and hourly/daily
+consumption retrieval have been verified against HAR captures of the new portal.
+See [docs/user-steps.en.md](docs/user-steps.en.md) for remaining validation steps.
 
 ## Features
 
@@ -71,17 +70,13 @@ The portal may change without notice; AVSA does not guarantee compatibility.
 Requires Home Assistant **2026.10.0** or later with `recorder` enabled (the
 default).
 
-- **HACS (custom repository):** once the repository is public, add
+- **HACS (custom repository):** in HACS, go to *Integrations*, click the top right three-dot menu, and select *Custom repositories*. Add
   `https://github.com/cguadall/ha-aigues-vic-portal` as a custom repository of
-  type *Integration*, install "Aigües Vic" and restart.
+  type *Integration*, search for «Aigües Vic», install it, and restart Home Assistant.
 - **Manual:** copy `custom_components/aigues_vic/` into the
   `custom_components/` folder of your Home Assistant configuration and restart.
   For Docker Compose (e.g. on a Raspberry Pi), see
   [docs/deployment-docker.en.md](docs/deployment-docker.en.md).
-
-The repository remains private during development. HACS requires a public
-repository; `hacs.json` does not imply publication or default-store inclusion.
-The HACS CI job is skipped while the repository is private.
 
 ## Configuration
 
@@ -266,37 +261,33 @@ python3.14 -m venv .venv
 ```
 
 Direct development dependencies are pinned in `requirements-dev.txt`. The
-integration has no external runtime dependencies: HTML is parsed with the
-standard library.
+integration has no external runtime dependencies: it uses standard Home Assistant
+libraries (`aiohttp`, etc.).
 
 Tests start Home Assistant with `pytest-homeassistant-custom-component` and a
-simulated portal (`tests/fake_portal.py`) that reproduces the real markup and
-quirks with synthetic data: sign-in and redirects, session-based contract
-selection, CSRF token, the contract list with its `ALTA`/`BAIXA` state,
-inactive contracts, inconsistent date bounds and the wrong `data-order` value in
-the reading column.
+simulated portal (`tests/fake_portal.py`) that reproduces the REST API with
+synthetic data: JWT authentication and token refresh, contract listings with `ALTA`/`BAIXA` states,
+inactive contracts, pagination, and JSON responses for hourly and daily readings and consumptions.
 
 GitHub Actions includes equivalent checks, Hassfest and HACS validation.
-Remote workflows only run after a push. The
+Remote workflows run after each push. The
 [Quality Scale](https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/)
 is a development guide, not an official certification of this project.
 
 ## Required samples and privacy
 
 Credentials are stored in the Home Assistant configuration and only sent to
-`oficina.aiguesvic.com`. Analysing portal changes may require new captures,
+the official API (`api-oficina.aiguesvic.com`). Analysing portal changes may require new captures,
 which can be kept temporarily in gitignored `local/`. Tests only use synthetic
 data.
 
-- Never share passwords, cookies, CSRF tokens or authorization headers.
+- Never share passwords, JWT tokens, cookies or authorization headers.
 - Remove names, emails, addresses, tax IDs, bank details and personal
   identifiers; use consistent synthetic replacements across samples.
 - Do not attach full HAR files: they may contain active sessions and personal
   information.
-- Preserve structure, number formats and relationships between records.
+- Preserve structure, JSON formats and relationships between records.
 - CAPTCHA or MFA would require a supported access method, not circumvention.
-- Do not tick "Recorda'm" on the portal: it stores the email and password in
-  clear-text browser cookies, which then end up in HAR files.
 
 To anonymize portal HAR captures, save them in `local/` and run:
 

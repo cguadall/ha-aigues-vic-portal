@@ -8,12 +8,12 @@ d'Aigües Vic (AVSA) des de la seva [oficina virtual](https://oficina.aiguesvic.
 ## Estat: versió 0.3.0, pendent de validar amb el portal real
 
 La integració està implementada i provada contra un portal simulat construït a
-partir de captures anonimitzades, però encara està pendent de validar amb el
-portal real en una instal·lació de Home Assistant. Els fluxos de login fallit,
-login correcte i logout s'han contrastat amb captures HAR. Altres comportaments
-del portal (caducitat de la sessió, canvis d'horari, capçaleres en castellà)
-s'han deduït i podrien necessitar ajustos. Consulta
-[docs/user-steps.md](docs/user-steps.md) per a les proves pendents.
+partir de captures de la nova API REST d'Aigües de Vic, però encara està
+pendent de validar amb el portal real en una instal·lació de Home Assistant.
+Els fluxos d'autenticació JWT (login i refresc de tokens), llistat de contractes
+i obtenció de consums horaris i diaris s'han contrastat amb captures HAR del
+nou portal. Consulta [docs/user-steps.md](docs/user-steps.md) per a les proves
+pendents.
 
 ## Funcionalitats
 
@@ -75,17 +75,13 @@ El portal podria canviar sense avís; la compatibilitat no està garantida per A
 Requereix Home Assistant **2026.10.0** o posterior i el `recorder` actiu (ho
 està per defecte).
 
-- **HACS (repositori personalitzat):** quan el repositori sigui públic, afegeix
+- **HACS (repositori personalitzat):** a HACS, ves a *Integracions*, fes clic al menú de tres punts (a dalt a la dreta) i tria *Repositoris personalitzats*. Afegeix
   `https://github.com/cguadall/ha-aigues-vic-portal` com a repositori
-  personalitzat de tipus *Integration*, instal·la «Aigües Vic» i reinicia.
+  personalitzat de tipus *Integration*, cerca «Aigües Vic», instal·la'l i reinicia Home Assistant.
 - **Manual:** copia `custom_components/aigues_vic/` dins de la carpeta
   `custom_components/` de la configuració de Home Assistant i reinicia.
   Per a Docker Compose (p. ex. en una Raspberry Pi), vegeu
   [docs/deployment-docker.md](docs/deployment-docker.md).
-
-El repositori es manté privat durant el desenvolupament. HACS requereix un
-repositori públic; tenir `hacs.json` no significa que estigui publicat ni admès
-al catàleg. La validació HACS de CI se salta mentre sigui privat.
 
 ## Configuració
 
@@ -274,35 +270,32 @@ python3.14 -m venv .venv
 
 Les dependències directes de desenvolupament estan fixades a
 `requirements-dev.txt`. La integració no té dependències d'execució externes:
-l'HTML es processa amb la biblioteca estàndard.
+només utilitza les biblioteques i components estàndard de Home Assistant (`aiohttp`, etc.).
 
 Les proves arrenquen Home Assistant amb `pytest-homeassistant-custom-component`
-i un portal simulat (`tests/fake_portal.py`) que reprodueix el marcatge i les
-peculiaritats del real amb dades sintètiques: inici de sessió i redireccions,
-selecció de contracte a la sessió, token CSRF, llista de contractes amb l'estat
-`ALTA`/`BAIXA`, contractes de baixa, límits de dates inconsistents i el valor
-erroni de `data-order` a la columna de lectura.
+i un portal simulat (`tests/fake_portal.py`) que reprodueix l'API REST del portal
+amb dades sintètiques: emissió i refresc de tokens JWT, llista de contractes amb l'estat
+`ALTA`/`BAIXA`, contractes inactius, paginació i retorn de lectures i consums horaris i diaris
+en format JSON.
 
 GitHub Actions inclou comprovacions locals equivalents, Hassfest i validació
-HACS. Els workflows només s'executen al remot després d'un push. La guia és la
+HACS. Els workflows s'executen al remot després de cada push. La guia és la
 [Quality Scale](https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/);
 aquest projecte no té cap certificació oficial.
 
 ## Mostres necessàries i privacitat
 
 Les credencials es desen a la configuració de Home Assistant i només s'envien
-a `oficina.aiguesvic.com`. Per analitzar canvis del portal poden caldre
+a l'API oficial (`api-oficina.aiguesvic.com`). Per analitzar canvis del portal poden caldre
 captures noves, que es poden desar temporalment a `local/` (Git l'ignora).
 Les proves només usen dades sintètiques.
 
-- No comparteixis contrasenyes, cookies, tokens CSRF ni capçaleres d'autorització.
+- No comparteixis contrasenyes, tokens JWT, cookies ni capçaleres d'autorització.
 - Elimina noms, correus, adreces, DNI/NIF, dades bancàries i identificadors
   personals; substitueix-los per valors sintètics consistents entre mostres.
 - No adjuntis HAR complets: poden contenir sessions i dades personals.
-- Conserva l'estructura, els formats numèrics i les relacions entre dades.
+- Conserva l'estructura, els formats JSON i les relacions entre dades.
 - Si existeixen CAPTCHA o MFA, caldrà estudiar un accés compatible, no eludir-los.
-- No marquis «Recorda'm» al portal: desa el correu i la contrasenya en clar en
-  cookies del navegador, que acabarien dins dels HAR.
 
 Per anonimitzar captures HAR del portal, desa-les a `local/` i executa:
 

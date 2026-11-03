@@ -28,14 +28,15 @@ exemples: adapta'ls al teu `docker-compose.yml`.
   En aquesta guia és `/opt/homeassistant/config`.
 - **Recorder:** ha d'estar actiu (ho està per defecte). Funciona amb SQLite,
   MariaDB o PostgreSQL.
-- **Sortida a Internet:** el contenidor ha d'arribar al portal per HTTPS:
+- **Sortida a Internet:** el contenidor ha d'arribar a l'API del portal per HTTPS:
 
   ```bash
   docker compose exec homeassistant python -c \
-    "import urllib.request as u; print(u.urlopen('https://oficina.aiguesvic.com/login', timeout=20).status)"
+    "import urllib.request as u, urllib.error as e;
+try: u.urlopen('https://api-oficina.aiguesvic.com/', timeout=20)
+except e.HTTPError as err: print(f'Connexió OK (HTTP {err.code})')
+except Exception as err: print(f'Error: {err}')"
   ```
-
-  Ha de mostrar `200`.
 - La integració no té dependències de Python externes (`requirements` és
   buit): no cal instal·lar res al contenidor ni compilar per a ARM.
 
@@ -58,12 +59,10 @@ La còpia conté credencials (vegeu la secció 8): guarda-la en un lloc protegit
 
 ## 3. Obtenir el codi
 
-Mentre el repositori sigui privat, HACS no el pot instal·lar. Clona'l a
-l'amfitrió amb un accés de només lectura, per exemple una *deploy key* SSH de
-GitHub o `gh auth login`:
+El repositori és públic a GitHub (`https://github.com/cguadall/ha-aigues-vic-portal`). Es pot afegir directament a HACS com a repositori personalitzat, o bé clonar-lo a l'amfitrió:
 
 ```bash
-sudo git clone git@github.com:cguadall/ha-aigues-vic-portal.git /opt/ha-aigues-vic-portal
+sudo git clone https://github.com/cguadall/ha-aigues-vic-portal.git /opt/ha-aigues-vic-portal
 ```
 
 Per a la prova, fixa la versió que vols desplegar (`git checkout <commit o

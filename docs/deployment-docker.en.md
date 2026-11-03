@@ -27,14 +27,15 @@ examples: adapt them to your `docker-compose.yml`.
   This guide uses `/opt/homeassistant/config`.
 - **Recorder:** it must be enabled (it is by default). SQLite, MariaDB and
   PostgreSQL all work.
-- **Internet access:** the container must reach the portal over HTTPS:
+- **Internet access:** the container must reach the portal API over HTTPS:
 
   ```bash
   docker compose exec homeassistant python -c \
-    "import urllib.request as u; print(u.urlopen('https://oficina.aiguesvic.com/login', timeout=20).status)"
+    "import urllib.request as u, urllib.error as e;
+try: u.urlopen('https://api-oficina.aiguesvic.com/', timeout=20)
+except e.HTTPError as err: print(f'Connection OK (HTTP {err.code})')
+except Exception as err: print(f'Error: {err}')"
   ```
-
-  It must print `200`.
 - The integration has no external Python dependencies (`requirements` is
   empty): nothing needs installing in the container or building for ARM.
 
@@ -57,12 +58,10 @@ The backup contains credentials (see section 8): store it somewhere protected.
 
 ## 3. Getting the code
 
-While the repository is private, HACS cannot install it. Clone it on the host
-with read-only access, for example a GitHub SSH *deploy key* or
-`gh auth login`:
+The repository is public on GitHub (`https://github.com/cguadall/ha-aigues-vic-portal`). It can be added directly to HACS as a custom repository, or cloned onto the host:
 
 ```bash
-sudo git clone git@github.com:cguadall/ha-aigues-vic-portal.git /opt/ha-aigues-vic-portal
+sudo git clone https://github.com/cguadall/ha-aigues-vic-portal.git /opt/ha-aigues-vic-portal
 ```
 
 For the test, pin the version to deploy (`git checkout <commit or tag>`). The
