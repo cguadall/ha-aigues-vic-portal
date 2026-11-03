@@ -5,7 +5,7 @@
 Integració custom, independent i no oficial per consultar consums d'aigua
 d'Aigües Vic (AVSA) des de la seva [oficina virtual](https://oficina.aiguesvic.com).
 
-## Estat: versió 0.3.0, pendent de validar amb el portal real
+## Estat: versió 0.3.1, pendent de validar amb el portal real
 
 La integració està implementada i provada contra un portal simulat construït a
 partir de captures de la nova API REST d'Aigües de Vic, però encara està

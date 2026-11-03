@@ -17,7 +17,7 @@ Tria una de les dues opcions:
   1. A Home Assistant, obre **HACS → Integracions**.
   2. Al menú de tres punts (⋮), selecciona **Repositoris personalitzats**.
   3. Afegeix `https://github.com/cguadall/ha-aigues-vic-portal` amb la categoria **Integration**.
-  4. Cerca «Aigües Vic», instal·la la versió **v0.3.0** i reinicia Home Assistant.
+  4. Cerca «Aigües Vic», instal·la la versió **v0.3.1** i reinicia Home Assistant.
 - [ ] **Opció B (Manual):**
   1. Copia la carpeta `custom_components/aigues_vic/` a la carpeta `config/custom_components/` de Home Assistant.
   2. Reinicia Home Assistant.

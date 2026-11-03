@@ -5,7 +5,7 @@
 An independent, unofficial custom integration for water consumption data from
 the Aigües Vic (AVSA) [customer portal](https://oficina.aiguesvic.com).
 
-## Status: version 0.3.0, not yet validated against the real portal
+## Status: version 0.3.1, not yet validated against the real portal
 
 The integration is implemented and tested against a simulated portal built from
 captures of the new Aigües de Vic REST API, but it has not yet been validated

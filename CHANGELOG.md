@@ -1,5 +1,13 @@
 # Registre de canvis
 
+## 0.3.1 (2026-11-03)
+
+### Millores i Recursos de Marca
+
+- **Actius de marca complets**: S'ha afegit el conjunt complet d'icones i logotips a `brand/` i `custom_components/aigues_vic/brand/` (`icon.png`, `icon@2x.png`, `dark_icon.png`, `dark_icon@2x.png`, `logo.png`, `logo@2x.png`, `dark_logo.png`, `dark_logo@2x.png`), assegurant la correcta visualització tant en temes clars com foscos i pantalles d'alta resolució (HiDPI).
+- **Metadades HACS**: S'ha afegit `"render_readme": true` a `hacs.json` per millorar la visualització de la documentació dins de la botiga de HACS.
+- **Documentació actualitzada**: S'ha completat la revisió de tota la documentació eliminant referències a l'antic portal i reflectint la publicació del repositori a GitHub.
+
 ## 0.3.0 (2026-11-03)
 
 ### Canvis i Adaptació al Nou Portal

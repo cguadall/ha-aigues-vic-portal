@@ -34,7 +34,7 @@ def test_manifest() -> None:
     assert manifest["issue_tracker"] == f"{repository}/issues"
     assert manifest["integration_type"] == "service"
     assert manifest["iot_class"] == "cloud_polling"
-    assert manifest["version"] == "0.3.0"
+    assert manifest["version"] == "0.3.1"
     assert manifest["config_flow"] is True
     assert manifest["dependencies"] == ["recorder"]
     assert manifest["requirements"] == []

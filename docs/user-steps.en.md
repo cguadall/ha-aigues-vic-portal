@@ -17,7 +17,7 @@ Choose one of the two options:
   1. In Home Assistant, open **HACS → Integrations**.
   2. In the three dots menu (⋮), select **Custom repositories**.
   3. Add `https://github.com/cguadall/ha-aigues-vic-portal` with the **Integration** category.
-  4. Search for "Aigües Vic", install version **v0.3.0**, and restart Home Assistant.
+  4. Search for "Aigües Vic", install version **v0.3.1**, and restart Home Assistant.
 - [ ] **Option B (Manual):**
   1. Copy `custom_components/aigues_vic/` into your Home Assistant `config/custom_components/` directory.
   2. Restart Home Assistant.
